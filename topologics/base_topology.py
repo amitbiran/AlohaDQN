@@ -25,13 +25,14 @@ class base_topology(ABC):
 
     def check_valid_action(self, action):
         """in the base topology each action should transmit only on one channel"""
-        found_trams_channel = False
-        for channel in action:
-            if (channel == 1):
-                if (found_trams_channel == True):
-                    return False
-                found_trams_channel = True
-        return True
+        # found_trams_channel = False
+        # for channel in action:
+        #     if (channel == 1):
+        #         if (found_trams_channel == True):
+        #             return False
+        #         found_trams_channel = True
+        # return True
+        return action >=0 and action <=len(self.channels)
 
     @abstractmethod
     def reward(self,arr):

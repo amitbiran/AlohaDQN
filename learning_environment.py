@@ -2,15 +2,15 @@
 import os,sys
 from topologics.random_topology import simple_topology
 from environment.environment import envorinment
-from generators.simple_generator import Simple_Generator
+
 
 if __name__ == '__main__':
     number_of_episodes = 100
     number_of_timeslots = 10
 
-    generator = Simple_Generator(10,3)
-    agents = generator.generate_agents()
-    channels = generator.generate_channels()
+
+
+
 
     #create multiagent environment
     topology = simple_topology(agents,channels)

@@ -4,7 +4,9 @@ import random
 
 class simple_topology(base_topology):
 
-    def reward(self,arr):
+    def reward(self,arr,action):
+        if(arr[action]==1):
+            return 1
         return 0
 
 

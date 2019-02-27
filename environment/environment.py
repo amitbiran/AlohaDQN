@@ -1,32 +1,37 @@
+from generators.simple_generator import Simple_Generator
+from topologics.random_topology import simple_topology
 
-class envorinment(object):
+class environment(object):
 
     #constructor
-    def __init__(self, topology, verbose=False):
+    def __init__(self, verbose=False,num_of_users=3,num_of_channels=2):
         self.verbose = verbose
-        self.agents = topology.agents
-        self.channels = topology.channels
-        self.reward= topology.reward
+        generator = Simple_Generator(n_agents=num_of_users-1,n_channels=num_of_channels)
+        self.agents = generator.generate_agents()
+        self.channels = generator.generate_channels()
+        self.number_of_channels = len(self.channels)
+        topology = simple_topology(self.agents,self.channels)
+        self.reward = topology.reward
         self.calculate_acknowledge = topology.calculate_acknowledge
         self.check_valid_action = topology.check_valid_action
-        self.n = len(self.channels)
+        self.actions = self.number_of_channels+1
 
-
-    def step(self, actions):
-        done_n = [] #done is an array  that represents a user in each index if index is true it means the user is trying to do a forbidden action
-        for i in range(len(actions)):
-            done_n.append(self.check_valid_action(actions[i]))
+    def step(self, action):
+        actions = [action]
+        for agent in self.agents:
+            actions.append(agent.take_action(len(self.channels)))
 
         channel_state =[]#array of arrays, in each array is a list of all users tring to transmit on that channel.
+        channel_state.append([])
         for cahnnel in self.channels:
             channel_state.append([])
 
         # iterate through the channels
-        for i in range(self.n):
+        for channel_number in range(self.actions):
             #iterate through the actions per channel
             for j in range(len(actions)):
-                if(actions[j][i]==1):#if someone tried to transmit on the channel add his id to the channel state array
-                    channel_state[i].append(self.agents[j].id)
+                if(channel_number==actions[j]):#if someone tried to transmit on the channel add his id to the channel state array
+                    channel_state[channel_number].append(j)
 
 
         ack_arr = self.calculate_acknowledge(channel_state,len(self.agents))#to tell which users got acknowledge for sending
@@ -38,11 +43,12 @@ class envorinment(object):
             print("ACK: {}".format(ack_arr))
 
 
-        obs_n = ack_arr
-        info_n = channel_state
-        reward_n = self.reward(ack_arr)
+        state = ack_arr
+        info = channel_state
+        reward = self.reward(ack_arr, action)
+        done = self.check_valid_action(action)  # done is an array  that represents a user in each index if index is true it means the user is trying to do a forbidden action
 
-        return obs_n,reward_n, done_n, info_n
+        return state,reward, done, info
 
     def render(self):
         pass
