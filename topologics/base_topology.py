@@ -12,11 +12,11 @@ class base_topology(ABC):
         self.channels = channels
 
 
-    def calculate_acknowledge(self,channels_current_step_state,n):
+    def calculate_acknowledge(self,channels_current_step_state,number_of_agents):
         """in the base topology each agent can transmit only on one channel in each action if a user want
         to use a different network protocol he should implement a new topology that extends base_topology and overide this function"""
         ack_arr = []  # to tell which users got acknowledge for sending
-        for i in range(n):
+        for i in range(number_of_agents):
             ack_arr.append(0)
         for item in channels_current_step_state:
             if (len(item) == 1):

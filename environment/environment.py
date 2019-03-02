@@ -34,7 +34,7 @@ class environment(object):
                     channel_state[channel_number].append(j)
 
 
-        ack_arr = self.calculate_acknowledge(channel_state,len(self.agents))#to tell which users got acknowledge for sending
+        ack_arr = self.calculate_acknowledge(channel_state,len(self.agents) + 1)#to tell which users got acknowledge for sending
 
         if(self.verbose):
             print ("channel states are: ",channel_state)
@@ -42,11 +42,18 @@ class environment(object):
                 print("agents: {} transmiting on channel: {} ".format(channel,channel_state.index(channel)))
             print("ACK: {}".format(ack_arr))
 
-
-        state = ack_arr
-        info = channel_state
+        state =[]
+        for i in range(2*self.number_of_channels + 1):
+            state.append(0)
+        state[action] = 1
+        state.append(ack_arr[0])
+        #state = #ack_arr
+        info = {
+                "channel state":channel_state,
+                "acknowledge array":ack_arr
+                }
         reward = self.reward(ack_arr, action)
-        done = self.check_valid_action(action)  # done is an array  that represents a user in each index if index is true it means the user is trying to do a forbidden action
+        done = not self.check_valid_action(action)  # done is an array  that represents a user in each index if index is true it means the user is trying to do a forbidden action
 
         return state,reward, done, info
 
@@ -54,7 +61,10 @@ class environment(object):
         pass
 
     def reset(self):
-        pass
+        state = []
+        for i in range(2*self.number_of_channels + 2):
+            state.append(0)
+        return state
 
 
 

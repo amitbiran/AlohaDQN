@@ -23,29 +23,23 @@ class Qnetwork():
     def __init__(self, h_size):
         # The network recieves a frame from the game, flattened into an array.
         # It then resizes it and processes it through four convolutional layers.
-        self.scalarInput = tf.placeholder(shape=[None, 8], dtype=tf.float32)#todo 8 = 2k+2
-        self.imageIn = tf.reshape(self.scalarInput, shape=[-1, 8])#todo 8 = 2k+2
-        self.conv1 = slim.conv2d( \
-            inputs=self.imageIn, num_outputs=32, kernel_size=[8, 8], stride=[4, 4], padding='VALID',
-            biases_initializer=None)
-        self.conv2 = slim.conv2d( \
-            inputs=self.conv1, num_outputs=64, kernel_size=[4, 4], stride=[2, 2], padding='VALID',
-            biases_initializer=None)
-        self.conv3 = slim.conv2d( \
-            inputs=self.conv2, num_outputs=64, kernel_size=[3, 3], stride=[1, 1], padding='VALID',
-            biases_initializer=None)
-        self.conv4 = slim.conv2d( \
-            inputs=self.conv3, num_outputs=h_size, kernel_size=[7, 7], stride=[1, 1], padding='VALID',
-            biases_initializer=None)
+       # self.scalarInput = tf.placeholder(shape=[None, 8], dtype=tf.float32)#todo 8 = 2k+2
+        self.scalarInput = tf.placeholder(shape=[1, 8], dtype=tf.float32)
+        self.W = tf.Variable(tf.random_uniform([8,4],0,0.01))
+        self.Qout = tf.matmul(self.scalarInput, self.W)
+        #self.imageIn = tf.reshape(self.inputs1, shape=[1,8])#todo 8 = 2k+2
+        # self.conv1 = slim.conv1d( \
+        #     inputs=self.imageIn, num_outputs=32, kernel_size=[8], stride=[1], padding='VALID')
+        # self.conv4 = slim.conv1d( \
+        #     inputs=self.conv1, num_outputs=h_size, kernel_size=[7], stride=[1], padding='VALID')
 
         # We take the output from the final convolutional layer and split it into separate advantage and value streams.
-        self.streamAC, self.streamVC = tf.split(self.conv4, 2, 3)
+        self.streamAC, self.streamVC = tf.split(self.Qout, 2, 1)
         self.streamA = slim.flatten(self.streamAC)
         self.streamV = slim.flatten(self.streamVC)
         xavier_init = tf.contrib.layers.xavier_initializer()
-        self.AW = tf.Variable(xavier_init([h_size // 2, env.actions]))
-        print("here is the env actions: ", env.actions)
-        self.VW = tf.Variable(xavier_init([h_size // 2, 1]))
+        self.AW = tf.Variable(xavier_init([h_size // 4, env.actions]))
+        self.VW = tf.Variable(xavier_init([h_size // 4, 1]))
         self.Advantage = tf.matmul(self.streamA, self.AW)
         self.Value = tf.matmul(self.streamV, self.VW)
 
@@ -81,7 +75,8 @@ class experience_buffer():
         return np.reshape(np.array(random.sample(self.buffer, size)), [size, 5])
 
 def processState(states):
-    return np.reshape(states,[21168])
+    #return np.reshape(states,[21168])
+    return states
 
 def updateTargetGraph(tfVars,tau):
     total_vars = len(tfVars)
@@ -96,18 +91,18 @@ def updateTarget(op_holder,sess):
 
 
 #train
-batch_size = 32 #How many experiences to use for each training step.
+batch_size = 1 #How many experiences to use for each training step.todo
 update_freq = 4 #How often to perform a training step.
 y = .99 #Discount factor on the target Q-values
 startE = 1 #Starting chance of random action
 endE = 0.1 #Final chance of random action
 annealing_steps = 10000. #How many steps of training to reduce startE to endE.
-num_episodes = 10000 #How many episodes of game environment to train network with.
+num_episodes = 50 #How many episodes of game environment to train network with.
 pre_train_steps = 10000 #How many steps of random actions before training begins.
 max_epLength = 50 #The max allowed length of our episode.
 load_model = False #Whether to load a saved model.
 path = "./dqn" #The path to save our model to.
-h_size = 512 #The size of the final convolutional layer before splitting it into Advantage and Value streams.
+h_size = 8 #The size of the final convolutional layer before splitting it into Advantage and Value streams.
 tau = 0.001 #Rate to update target network toward primary network
 
 tf.reset_default_graph()
@@ -144,6 +139,7 @@ with tf.Session() as sess:
         ckpt = tf.train.get_checkpoint_state(path)
         saver.restore(sess, ckpt.model_checkpoint_path)
     for i in range(num_episodes):
+        print("episode num is " , i," out of ",num_episodes)
         episodeBuffer = experience_buffer()
         # Reset environment and get first new observation
         s = env.reset()
@@ -159,8 +155,14 @@ with tf.Session() as sess:
                 a = np.random.randint(0, 4)
             else:
                 a = sess.run(mainQN.predict, feed_dict={mainQN.scalarInput: [s]})[0]
-            s1, r, d = env.step(a)
-            print("here is the env step: ", (s1,r,d))
+            s1, r, d, info = env.step(a)
+            print("____________________________________________")
+            print("action: ", a)
+            print("info: " , info)
+            print("state1: ", s1)
+            print("reward: ", r)
+            print("done: ", d)
+            print("____________________________________________")
             s1 = processState(s1)
             total_steps += 1
             episodeBuffer.add(
@@ -201,7 +203,6 @@ with tf.Session() as sess:
             print(total_steps, np.mean(rList[-10:]), e)
     saver.save(sess, path + '/model-' + str(i) + '.ckpt')
 print("Percent of succesful episodes: " + str(sum(rList) / num_episodes) + "%")
-
 
 rMat = np.resize(np.array(rList),[len(rList)//100,100])
 rMean = np.average(rMat,1)
