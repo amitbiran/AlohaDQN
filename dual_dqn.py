@@ -1,6 +1,5 @@
 from __future__ import division
 
-import gym
 import numpy as np
 import random
 import tensorflow as tf
@@ -8,6 +7,8 @@ import tensorflow.contrib.slim as slim
 import matplotlib.pyplot as plt
 import scipy.misc
 import os
+from tensorflow.contrib import rnn
+from tensorflow.python.ops import math_ops
 #%matplotlib inline
 from environment.environment import environment
 
@@ -21,25 +22,24 @@ env = environment(verbose=True,num_of_users=4,num_of_channels=3)
 #implement network
 class Qnetwork():
     def __init__(self, h_size):
-        # The network recieves a frame from the game, flattened into an array.
-        # It then resizes it and processes it through four convolutional layers.
-       # self.scalarInput = tf.placeholder(shape=[None, 8], dtype=tf.float32)#todo 8 = 2k+2
+        tf.reset_default_graph()
         self.scalarInput = tf.placeholder(shape=[1, 8], dtype=tf.float32)
-        self.W = tf.Variable(tf.random_uniform([8,4],0,0.01))
-        self.Qout = tf.matmul(self.scalarInput, self.W)
-        #self.imageIn = tf.reshape(self.inputs1, shape=[1,8])#todo 8 = 2k+2
-        # self.conv1 = slim.conv1d( \
-        #     inputs=self.imageIn, num_outputs=32, kernel_size=[8], stride=[1], padding='VALID')
-        # self.conv4 = slim.conv1d( \
-        #     inputs=self.conv1, num_outputs=h_size, kernel_size=[7], stride=[1], padding='VALID')
+        self.scalarInput = tf.expand_dims(self.scalarInput,axis=2)
+        self.batch_size = tf.Variable(32,trainable=False) # defualt number of batch size, can be altered with a set function
+        self.policy_lstm_cell = rnn.BasicLSTMCell(num_units=100, forget_bias=1.0,reuse=tf.AUTO_REUSE, activation=math_ops.tanh) # TODO adjust the activation function
+        self.policy_rnnex_t, self.policy_rnn_state = tf.nn.dynamic_rnn(inputs=self.scalarInput, cell=self.policy_lstm_cell, dtype=tf.float32)
 
-        # We take the output from the final convolutional layer and split it into separate advantage and value streams.
-        self.streamAC, self.streamVC = tf.split(self.Qout, 2, 1)
+
+
+
+
+        # We take the output from the lstm layer and split it into separate advantage and value streams.
+        self.streamAC, self.streamVC = tf.split(self.policy_rnnex_t, 2, 1)
         self.streamA = slim.flatten(self.streamAC)
         self.streamV = slim.flatten(self.streamVC)
         xavier_init = tf.contrib.layers.xavier_initializer()
-        self.AW = tf.Variable(xavier_init([h_size // 4, env.actions]))
-        self.VW = tf.Variable(xavier_init([h_size // 4, 1]))
+        self.AW = tf.Variable(xavier_init([h_size , env.actions]))
+        self.VW = tf.Variable(xavier_init([h_size , 1]))
         self.Advantage = tf.matmul(self.streamA, self.AW)
         self.Value = tf.matmul(self.streamV, self.VW)
 
@@ -82,6 +82,7 @@ def updateTargetGraph(tfVars,tau):
     total_vars = len(tfVars)
     op_holder = []
     for idx,var in enumerate(tfVars[0:total_vars//2]):
+        va = var.value()
         op_holder.append(tfVars[idx+total_vars//2].assign((var.value()*tau) + ((1-tau)*tfVars[idx+total_vars//2].value())))
     return op_holder
 
@@ -91,7 +92,7 @@ def updateTarget(op_holder,sess):
 
 
 #train
-batch_size = 1 #How many experiences to use for each training step.todo
+batch_size = 32 #How many experiences to use for each training step.todo
 update_freq = 4 #How often to perform a training step.
 y = .99 #Discount factor on the target Q-values
 startE = 1 #Starting chance of random action
@@ -102,7 +103,7 @@ pre_train_steps = 10000 #How many steps of random actions before training begins
 max_epLength = 50 #The max allowed length of our episode.
 load_model = False #Whether to load a saved model.
 path = "./dqn" #The path to save our model to.
-h_size = 8 #The size of the final convolutional layer before splitting it into Advantage and Value streams.
+h_size = 400 #The size of the final convolutional layer before splitting it into Advantage and Value streams.
 tau = 0.001 #Rate to update target network toward primary network
 
 tf.reset_default_graph()
@@ -115,7 +116,7 @@ saver = tf.train.Saver()
 
 trainables = tf.trainable_variables()
 
-targetOps = updateTargetGraph(trainables, tau)
+#targetOps = updateTargetGraph(trainables, tau)
 
 myBuffer = experience_buffer()
 
