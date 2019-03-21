@@ -1,5 +1,5 @@
 from __future__ import division
-
+#refrence https://arxiv.org/pdf/1509.06461.pdf
 import numpy as np
 import random
 import tensorflow as tf
@@ -11,13 +11,15 @@ from tensorflow.contrib import rnn
 from tensorflow.python.ops import math_ops
 #%matplotlib inline
 from environment.environment import environment
-
+from states_buffer import StatesBuffer
 from keras.models import Sequential, Model
 from keras.layers import LSTM ,Input, Dense, Lambda
 
 from keras.layers.convolutional import Conv2D
 from keras.layers.merge import _Merge, Multiply
 from keras import backend as K
+
+countt=0
 NUM_OF_CHANNELS = 3
 number_of_steps = 4#how many time steps are we training it for
 batch_size = 10#how many examples we show model before updating weights
@@ -26,11 +28,10 @@ OUTPUT_DIM = NUM_OF_CHANNELS + 1
 number_of_lstm_units = 100
 h_size = int((number_of_steps/2)*number_of_lstm_units) #The size of the lstm layer before splitting it into Advantage and Value streams.
 
+
+
 from gridworld import gameEnv
 #env = gameEnv(partial=False,size=5)
-
-
-env = environment(verbose=True,num_of_users=4, num_of_channels=NUM_OF_CHANNELS)
 #implement network
 
 class QLayer(_Merge):
@@ -79,10 +80,10 @@ class Qnetwork():
         # self.trainer = tf.train.AdamOptimizer(learning_rate=0.0001)
         # self.updateModel = self.trainer.minimize(self.loss)
         self.model.summary()
-        A=9
 
     def get_q(self, state):
-        return self.model.predict_on_batch(state)
+        o=self.model.predict_on_batch(state)
+        return o
 
 class Experience():
 
@@ -132,142 +133,178 @@ def updateTarget(op_holder,sess):
     for op in op_holder:
         sess.run(op)
 
-"""
-#train
-#batch_size = 32 #How many experiences to use for each training step.todo
-update_freq = 4 #How often to perform a training step.
-y = .99 #Discount factor on the target Q-values
-startE = 1 #Starting chance of random action
-endE = 0.1 #Final chance of random action
-annealing_steps = 10000. #How many steps of training to reduce startE to endE.
-num_episodes = 100 #How many episodes of game environment to train network with.
-pre_train_steps = 10000 #How many steps of random actions before training begins.
-#max_epLength = 50 #The max allowed length of our episode.
-load_model = False #Whether to load a saved model.
-path = "./dqn" #The path to save our model to.
-
-tau = 0.001 #Rate to update target network toward primary network
-
-gamma = 0.9
-start_eps = 1.
-end_eps = 0.1
-max_episode_length = 400
-target_update_rate = 0.001
-
-eps = start_eps
-step_drop = (start_eps - end_eps) / annealing_steps
-
-#store rewards and steps per episode
-j_list = []
-r_list = []
-total_steps = 0
-
-actor_network = Qnetwork(h_size)
-target_network = Qnetwork(h_size)
-
-experience = Experience(buffer_size=50000)
-
-## Do this to periodically update the target network with ##
-## the weights of the actor network                                   ##
-# target_network.set_weights(actor_network.get_weights())
 
 
-for i in range(num_episodes):
-    print("start episode ",i)
-    episode_exp = Experience(buffer_size=50000)
-    s = env.reset()
-    # s = resizeFrames(s)
-    done = False
-    total_reward = 0
-    j = 0
 
-    while j < max_episode_length:
-        j += 1
-
-        if np.random.rand(1) < eps or total_steps < pre_train_steps:
-            a = np.random.randint(0, 4)
-        else:
-            prediction = actor_network.model.predict([s.reshape((1, 84, 84, 3)), np.zeros((32, 1))])
-            a = np.argmax(prediction[0])
-
-        s1, r, done,info = env.step(a)
-        print("reward is:" , r)
-        # s1 = resizeFrames(s1)
-        total_steps += 1
-        print(total_steps,pre_train_steps)
-        episode_exp.storeExperience(np.reshape(np.array([s, a, r, s1, done]), [1, 5]))
-
-        if total_steps > pre_train_steps:
-            if eps > end_eps:
-                eps -= step_drop
-
-            if total_steps % update_freq == 0:
-                train_batch = experience.sample(batch_size)
-                print("hello world")
-                # Have to do this because couldn't easily splice array
-                # out of experience buffer, e.g.,
-                # train_input = train_batch[:, 3]
-                # when train_batch was a numpy array
-                this_state = np.ndarray((batch_size,features))
-                actions = np.ndarray((batch_size, 1))
-                rewards = np.ndarray((batch_size, 1))
-                next_state = np.ndarray((batch_size,features))
-                dones = np.ndarray((batch_size, 1))
-                for i in range(batch_size):
-                    if(total_steps== 10004):
-                        kkk=0
-                        tt= train_batch[i][0]
-                        ttt=train_batch[i][1]
-                    ts = train_batch[i][0]
-                    this_state[i] = ts
-                    actions[i] = train_batch[i][1]
-                    rewards[i] = train_batch[i][2]
-                    next_state[i] = train_batch[i][3]
-                    dones[i] = train_batch[i][4]
-
-                q1 = actor_network.model.predict([next_state, np.zeros((32, 1))])
-                q1 = np.argmax(q1[0], axis=3)
-
-                q2 = target_network.model.predict([next_state, np.zeros((32, 1))])
-                q2 = q2[0].reshape((batch_size, env.actions))
-
-                end_multiplier = -(dones - 1)
-
-                double_q = q2[range(32), q1.reshape((32))].reshape((32, 1))
-
-                target_q = rewards + (gamma * double_q * end_multiplier)
-
-                print("Target Q Shape: ", target_q.shape)
-
-                q = actor_network.model.predict([this_state, actions])
-                # q_of_actions = q[:, train_batch[:, 1]]
-                print(target_q.shape)
-
-                actor_network.model.fit([this_state, actions], [np.zeros((32, 1, 1, 4)), target_q])
-                target_network.model.set_weights(actor_network.model.get_weights())
-
-        total_reward += r
-        s = s1
-
-        if done == True:
-            break
-
-    experience.storeExperience(episode_exp.replay_buffer)
-    j_list.append(j)
-    r_list.append(total_reward)
+class experience_buffer():
+    def __init__(self, buffer_size=50000):
+        self.buffer = []
+        self.buffer_size = buffer_size
 
 
-print("Percent of succesful episodes: " + str(sum(r_list) / num_episodes) + "%")
-"""
+    def add(self, experience):
+        if len(self.buffer) + len(experience) >= self.buffer_size:
+            self.buffer[0:(len(experience) + len(self.buffer)) - self.buffer_size] = []
+        self.buffer.extend(experience)
+
+    def sample(self, size):
+        return np.reshape(np.array(random.sample(self.buffer, size)), [size, 5])
+
 if __name__ == '__main__':
-    agent = Qnetwork()
-    state = np.asarray(env.reset())#size of feature
-    zero_state = np.zeros(features)
-    state_to_feed = [state]
-    for i in range(number_of_steps-1):
-        state_to_feed.append(zero_state)
-    state_to_feed = np.asarray(state_to_feed)
-    state_to_feed = np.reshape(state_to_feed,newshape=(1, number_of_steps, features))
-    q_value_probability_distribuation = agent.get_q(state=state_to_feed)
-    print (q_value_probability_distribuation)
-    a = 5
+    #create env
+    env = environment(verbose=True, num_of_users=4, num_of_channels=NUM_OF_CHANNELS)
+
+
+
+    # agent = Qnetwork()
+    # state = np.asarray(env.reset())#size of feature
+    # zero_state = np.zeros(features)
+    # state_to_feed = [state]
+    # for i in range(number_of_steps-1):
+    #     state_to_feed.append(zero_state)
+    # state_to_feed = np.asarray(state_to_feed)
+    # state_to_feed = np.reshape(state_to_feed,newshape=(1, number_of_steps, features))
+    # q_value_probability_distribuation = agent.get_q(state=state_to_feed)
+    # print (q_value_probability_distribuation)
+    # a = 5
+
+    update_freq = 4  # How often to perform a training step.
+    y = .99  # Discount factor on the target Q-values
+    startE = 1  # Starting chance of random action
+    endE = 0.1  # Final chance of random action
+    annealing_steps = 10000.  # How many steps of training to reduce startE to endE.
+    num_episodes = 100  # How many episodes of game environment to train network with.
+    pre_train_steps = 1000  # How many steps of random actions before training begins.
+    # max_epLength = 50 #The max allowed length of our episode.
+    load_model = False  # Whether to load a saved model.
+    path = "./dqn"  # The path to save our model to.
+
+    tau = 0.001  # Rate to update target network toward primary network
+
+    gamma = 0.9
+    start_eps = 1.
+    end_eps = 0.1
+    max_episode_length = 400
+    target_update_rate = 0.001
+
+    eps = start_eps
+    step_drop = (start_eps - end_eps) / annealing_steps
+
+
+
+    #create buffers
+    j_list = []
+    r_list = []
+
+    myBuffer = experience_buffer()
+    total_steps = 0
+
+    actor_network = Qnetwork()
+    target_network = Qnetwork()
+
+    for i in range(num_episodes):
+        print("i: ", i)
+        # each episode we reset the env and variables
+        episodeBuffer = experience_buffer()
+        state = env.reset()
+        suc_count = 0
+        try_count = 0
+        done = False
+        total_reward = 0
+        j = 0
+        states_buffer = StatesBuffer(number_of_steps)
+
+
+        while j<max_episode_length:
+            print("j: ",j)
+            #here is what we do each episode
+            j+=1
+            if np.random.rand(1) < eps or total_steps < pre_train_steps:
+                action = np.random.randint(0, NUM_OF_CHANNELS+1)#before we gained enough experience we choose action randomly
+            else:
+                #if we have enough experience we feed the data to the network and get a predicition
+
+                buff = states_buffer.buff
+                if (len(buff)<number_of_steps):
+                    buff = np.zeros((number_of_steps,features))
+                state_for_input = np.array([buff])
+
+                prediction = actor_network.get_q(state_for_input)
+                action=np.argmax(prediction[0])
+
+            state1,reward,done,info=env.step(action)#take a step with the action that was chosen
+            print("reward is: ",reward)
+            total_steps+=1#so we know we took a step
+            episodeBuffer.add(np.reshape(np.array([state, action, reward, state1, done]), [1, 5]))  # Save the experience to our episode buffer.
+            if(total_steps>pre_train_steps):
+                #normalize eps
+                if(eps>end_eps):
+                    eps-=step_drop
+                if(total_steps%update_freq==0):#if we need to update
+                    train_batch = myBuffer.sample(batch_size)#Get a random batch of experiences.
+
+                    # Below we perform the Double-DQN update to the target Q-values
+                    this_state = np.ndarray((batch_size,number_of_steps, features))
+                    actions = np.ndarray((batch_size,1))
+                    rewards = np.ndarray((batch_size, 4))
+                    next_state = np.ndarray((batch_size,number_of_steps, features))
+                    dones = np.ndarray((batch_size,1))
+                    for ii in range(batch_size):
+                        this_state[ii] = train_batch[ii][0]
+                        actions[ii] = train_batch[ii][1]
+                        tem=[]#todo fix actions to give it properly not clones
+                        for jj in range(number_of_steps):
+                            tem.append(train_batch[ii][2])
+                        rewards[ii] = np.array(tem)
+                        next_state[ii] = train_batch[ii][3]
+                        dones[ii] = train_batch[ii][4]
+
+
+                    #get q values from networks
+                    q1=actor_network.get_q(next_state)
+                    q1=np.argmax(q1[0])
+
+                    q2 = target_network.get_q(next_state)
+                    q2=q2[0]
+
+                    end_multiplier = -(dones - 1)
+                    double_q = q2[q1]
+                    target_q = rewards + (gamma*double_q*end_multiplier)
+                   # print(target_q.shape)
+
+                    q=actor_network.get_q(this_state)#feed state to main network
+                    print("value of q is: ", q)
+                    #orgenize input
+                    #todo fix the arr to input so it gives it properly and not clones
+                    arr_to_input = []#np.array()
+                    for a in actions:
+                        arr_for_one_action=np.zeros((number_of_steps, features))
+                        action1 = np.zeros(features)
+                        action1[int(a)]=1
+                        for k in range(number_of_steps):
+                            arr_for_one_action[k]=action1
+                        arr_to_input.append(arr_for_one_action)
+                    arr_to_input= np.array(arr_to_input)
+
+
+
+
+                    actor_network.model.fit(arr_to_input,target_q)
+                    print("fit done: ",countt)
+                    countt+=1
+            state=state1
+            states_buffer.add(state)
+            total_reward+=reward
+            if(reward == 1):
+                suc_count+=1
+            try_count+=1
+
+        print("success {} out of {} -> {}".format(str(suc_count),str(try_count),str(suc_count/try_count)))
+        myBuffer.add(episodeBuffer.buffer)
+        j_list.append(j)
+        r_list.append(total_reward)
+print("Percent of succesful episodes: " + str(sum(r_list)/num_episodes) + "%")
+
+rMat = np.resize(np.array(r_list),[len(r_list)//100,100])
+rMean = np.average(rMat,1)
+plt.plot(rMean)
