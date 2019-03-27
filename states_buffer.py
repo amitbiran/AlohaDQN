@@ -6,17 +6,25 @@ class StatesBuffer(object):
     def add(self,item):
         self.buff.insert(0,item)
         if(len(self.buff)>self._size):
-            self.buff.remove(self.buff[-1])
+            self.buff.pop(-1)
+        a=0
 
     def reset(self):
         self.buff = []
 
 
-s =StatesBuffer(4)
-s.add(1)
-s.add(2)
-s.add(3)
-s.add(4)
-s.add(5)
-s.add(6)
-a=1
+
+# s =StatesBuffer(4)
+# s.add(0)
+# s.add(1)
+# s.add(2)
+# s.add(3)
+# s.add(0)
+# s.add(1)
+# s.add(0)
+# s.add(1)
+# s.add(0)
+# s.add(1)
+# s.add(0)
+# s.add(1)
+# a=1
