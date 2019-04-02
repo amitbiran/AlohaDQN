@@ -19,7 +19,7 @@ class environment(object):
     def step(self, action):
         actions = [action]
         for agent in self.agents:
-            actions.append(agent.take_action(len(self.channels)))
+            actions.append(self.agents.index(agent)+1)#agent.take_action(len(self.channels)))todo change
 
         channel_state =[]#array of arrays, in each array is a list of all users tring to transmit on that channel.
         channel_state.append([])
@@ -46,15 +46,19 @@ class environment(object):
         for i in range(2*self.number_of_channels + 1):
             state.append(0)
         state[action] = 1
-        state.append(ack_arr[0])
+
         #state = #ack_arr
         info = {
                 "channel state":channel_state,
                 "acknowledge array":ack_arr
                 }
         reward = self.reward(ack_arr, action)
+        if reward==0.1:
+            state.append(0)
+        else:
+            state.append(reward)
         done = not self.check_valid_action(action)  # done is an array  that represents a user in each index if index is true it means the user is trying to do a forbidden action
-
+        print("state is: {}".format(state))
         return state,reward, done, info
 
     def render(self):

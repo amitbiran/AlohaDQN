@@ -23,8 +23,8 @@ from states_buffer import StatesBuffer
 from StepsBuffer import StepsBuffer
 from EpisodesBuffer import EpisodesBuffer
 countt=0
-NUM_OF_CHANNELS = 3
-number_of_steps = 4#how many time steps are we training it for
+NUM_OF_CHANNELS = 4
+number_of_steps = 5#how many time steps are we training it for
 batch_size = 10#how many examples we show model before updating weights
 features = 2 * NUM_OF_CHANNELS + 2#the input is the size of 8 numbers for now todo
 OUTPUT_DIM = NUM_OF_CHANNELS + 1
@@ -85,7 +85,7 @@ class Qnetwork():
 
 if __name__ == '__main__':
     #create env
-    env = environment(verbose=True, num_of_users=4, num_of_channels=NUM_OF_CHANNELS)
+    env = environment(verbose=True, num_of_users=3, num_of_channels=NUM_OF_CHANNELS)
 
 
 
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     startE = 1  # Starting chance of random action
     endE = 0.1  # Final chance of random action
     annealing_steps = 10000.  # How many steps of training to reduce startE to endE.
-    num_episodes = 1000  # How many episodes of game environment to train network with.
+    num_episodes = 100  # How many episodes of game environment to train network with.
     pre_train_steps = 1000  # How many steps of random actions before training begins.
     # max_epLength = 50 #The max allowed length of our episode.
     load_model = False  # Whether to load a saved model.
@@ -117,7 +117,7 @@ if __name__ == '__main__':
     gamma = 0.9
     start_eps = 1.
     end_eps = 0.1
-    max_episode_length = 1000
+    max_episode_length = 400
     target_update_rate = 0.001
 
     eps = start_eps
@@ -182,6 +182,7 @@ if __name__ == '__main__':
                     this_state = np.ndarray((batch_size,number_of_steps, features))
                     actions = np.ndarray((batch_size,number_of_steps))
                     rewards = np.ndarray((batch_size, number_of_steps))
+
                     next_state = np.ndarray((batch_size,number_of_steps, features))
                     dones = np.ndarray((batch_size,1))
                     for ii in range(batch_size):
@@ -196,35 +197,49 @@ if __name__ == '__main__':
 
 
                     #get q values from networks
-                    q1=actor_network.get_q(next_state)
+                    q1=actor_network.get_q(next_state)#todo dor said to change here actor to target network
                     q1=np.argmax(q1[0])
 
-                    q2 = target_network.get_q(next_state)
+                    q2 = target_network.get_q(next_state)#according to dor this is the next q value
                     q2=q2[0]
 
-                    end_multiplier = -(dones - 1)
+                    target_batch = target_network.get_q(this_state)
+
+
+                    end_multiplier = 1#-(dones - 1)todo for now need to fix that
                     double_q = q2[q1]
                     target_q = rewards + (gamma*double_q*end_multiplier)
                    # print(target_q.shape)
 
+
+                    for index in range(batch_size):
+                       # r = train_batch[index][2]
+                        target = train_batch[index][2]+(gamma*double_q*end_multiplier)
+                        target_batch[index][train_batch[index][1]]=target#train_batch[index][1] this is the action itself exmp(0 or 3 or 2)
+
                     q=actor_network.get_q(this_state)#feed state to main network
                     print("value of q is: ", q)
+
+
+
+                    #todo add actions input properly to update weights
+
                     #orgenize input
                     #todo fix the arr to input so it gives it properly and not clones all info alreadfy in train_batch
-                    arr_to_input = []#np.array()
-                    for a in actions:#a is a list represents 4 timesteps
-                        arr_for_one_action = np.zeros((number_of_steps, features))
-                        for k in range(number_of_steps):
-                            action1 = np.zeros(features)
-                            action1[int(a[k])]=1
-                            arr_for_one_action[k] = action1
-                        arr_to_input.append(arr_for_one_action)
-                    arr_to_input= np.array(arr_to_input)
+                    # arr_to_input = []#np.array()
+                    # for a in actions:#a is a list represents 4 timesteps
+                    #     arr_for_one_action = np.zeros((number_of_steps, features))
+                    #     for k in range(number_of_steps):
+                    #         action1 = np.zeros(features)
+                    #         action1[int(a[k])]=1
+                    #         arr_for_one_action[k] = action1
+                    #     arr_to_input.append(arr_for_one_action)
+                    # arr_to_input= np.array(arr_to_input)
 
 
 
 
-                    actor_network.model.fit(arr_to_input,target_q)
+                    actor_network.model.fit(this_state,target_batch)
                     print("fit done: ",countt)
                     countt+=1
             state=state1
@@ -235,6 +250,7 @@ if __name__ == '__main__':
             if(reward == 1):
                 suc_count+=1
             try_count+=1
+
 
         print("success {} out of {} -> {}".format(str(suc_count),str(try_count),str(suc_count/try_count)))
         succ_rate_list.append(suc_count/try_count)
