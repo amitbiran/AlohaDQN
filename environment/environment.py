@@ -1,12 +1,12 @@
 from generators.simple_generator import Simple_Generator
 from topologics.random_topology import simple_topology
-
+from Qnetwork import Qnetwork
 class environment(object):
 
     #constructor
-    def __init__(self, verbose=False,num_of_users=3,num_of_channels=2):
+    def __init__(self, verbose=False,num_of_users=3,num_of_channels=2,dqn = None):
         self.verbose = verbose
-        generator = Simple_Generator(n_agents=num_of_users-1,n_channels=num_of_channels)
+        generator = Simple_Generator(n_agents=num_of_users-1,n_channels=num_of_channels,env=self)
         self.agents = generator.generate_agents()
         self.channels = generator.generate_channels()
         self.number_of_channels = len(self.channels)
@@ -19,7 +19,7 @@ class environment(object):
     def step(self, action):
         actions = [action]
         for agent in self.agents:
-            actions.append(self.agents.index(agent)+1)#agent.take_action(len(self.channels)))todo change
+            actions.append(agent.take_action(len(self.channels)))
 
         channel_state =[]#array of arrays, in each array is a list of all users tring to transmit on that channel.
         channel_state.append([])

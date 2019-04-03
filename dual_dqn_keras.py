@@ -1,129 +1,67 @@
 from __future__ import division
-#refrence https://arxiv.org/pdf/1509.06461.pdf
 import numpy as np
-import random
-import tensorflow as tf
-import tensorflow.contrib.slim as slim
 import matplotlib.pyplot as plt
-import scipy.misc
-import os
-from tensorflow.contrib import rnn
-from tensorflow.python.ops import math_ops
 #%matplotlib inline
 from environment.environment import environment
+from buffers.states_buffer import StatesBuffer
+from buffers.StepsBuffer import StepsBuffer
+from buffers.EpisodesBuffer import EpisodesBuffer
+from Qnetwork import Qnetwork
+import datetime
+import os
 
-from keras.models import Sequential, Model
-from keras.layers import LSTM ,Input, Dense, Lambda
-
-from keras.layers.convolutional import Conv2D
-from keras.layers.merge import _Merge, Multiply
-from keras import backend as K
-
-from states_buffer import StatesBuffer
-from StepsBuffer import StepsBuffer
-from EpisodesBuffer import EpisodesBuffer
 countt=0
-NUM_OF_CHANNELS = 4
+NUM_OF_CHANNELS = 5
 number_of_steps = 5#how many time steps are we training it for
 batch_size = 10#how many examples we show model before updating weights
-features = 2 * NUM_OF_CHANNELS + 2#the input is the size of 8 numbers for now todo
+features = 2 * NUM_OF_CHANNELS + 2
 OUTPUT_DIM = NUM_OF_CHANNELS + 1
 number_of_lstm_units = 100
 h_size = int((number_of_steps/2)*number_of_lstm_units) #The size of the lstm layer before splitting it into Advantage and Value streams.
 
 
-
-from gridworld import gameEnv
 #env = gameEnv(partial=False,size=5)
 #implement network
 
-class QLayer(_Merge):
-    '''Q Layer that merges an advantage and value layer'''
-    def _merge_function(self, inputs):
-        '''Assume that the inputs come in as [value, advantage]'''
-        output = inputs[0] + (inputs[1] - K.mean(inputs[1], axis=1, keepdims=True))
-        return output
-
-
-class Qnetwork():
-    def __init__(self):
-
-        self.state = Input(shape=(number_of_steps, features), dtype=tf.float32)
-        LSTM_layer = LSTM(units=number_of_lstm_units, return_sequences=False)(self.state)#make it with an abstract batch_size
-
-       # Splice outputs of lastm layer using lambda layer
-        x_value = Lambda(lambda LSTM_layer: LSTM_layer[ :, :number_of_lstm_units // 2])(LSTM_layer)
-        x_advantage = Lambda(lambda LSTM_layer: LSTM_layer[:, number_of_lstm_units // 2:])(LSTM_layer)
-
-       # Process spliced data stream into value and advantage function
-        value = Dense(activation="linear", units=10)(x_value)
-        advantage = Dense(activation="linear", units=10)(x_advantage)
-
-       # self.actions = Input(shape=(1,), dtype='int32')
-        #self.actions_onehot = Lambda(K.one_hot, arguments={'num_classes': 10}, output_shape=(None,10))(self.actions)#todo instead of 10 was env.actions
-
-        q = QLayer()([value, advantage])  # output dim is now 10
-        self.q_out = Dense(activation="softmax", units=OUTPUT_DIM)(q)
-
-
-
-        self.model = Model(inputs=[self.state], outputs=[self.q_out])
-        self.model.compile(optimizer="Adam", loss="mean_squared_error")
-
-        self.model.summary()
-
-    def get_q(self, state):
-        o=self.model.predict_on_batch(state)
-        return o
-
-
-
-
-
-    def sample(self, size):#need to keep last number of steps rewards and states for each one i sample
-        return np.reshape(np.array(random.sample(self.buffer, size)), [size, 5])
 
 if __name__ == '__main__':
+    timestamp = str(datetime.datetime.now())  # .split('.')
+    timestamp = timestamp.replace(':', '-')
+    path = os.path.join(os.getcwd(), 'dqn')
+    path = os.path.join(path, timestamp) + " - model"
+    os.makedirs(path)
+    print("created folder for model at {}".format(path))
+
+    print("writing general variables")
+    with open(os.path.join(path, "general_variables.txt"), "w+") as f:
+        f.write("NUM_OF_CHANNELS = {}\n".format(NUM_OF_CHANNELS))
+        f.write("number_of_steps = {}\n".format(number_of_steps))
+        f.write("batch_size = {}\n".format(batch_size))
+        f.write("features = {}\n".format(features))
+        f.write("OUTPUT_DIM = {}\n".format(OUTPUT_DIM))
+        f.write("number_of_lstm_units = {}\n".format(number_of_lstm_units))
+        f.write("h_size = {}\n".format(h_size))
+
     #create env
-    env = environment(verbose=True, num_of_users=3, num_of_channels=NUM_OF_CHANNELS)
+    env = environment(verbose=True, num_of_users=4, num_of_channels=NUM_OF_CHANNELS)
 
-
-
-    # agent = Qnetwork()
-    # state = np.asarray(env.reset())#size of feature
-    # zero_state = np.zeros(features)
-    # state_to_feed = [state]
-    # for i in range(number_of_steps-1):
-    #     state_to_feed.append(zero_state)
-    # state_to_feed = np.asarray(state_to_feed)
-    # state_to_feed = np.reshape(state_to_feed,newshape=(1, number_of_steps, features))
-    # q_value_probability_distribuation = agent.get_q(state=state_to_feed)
-    # print (q_value_probability_distribuation)
-    # a = 5
-
+    #general params
     update_freq = 4  # How often to perform a training step.
     y = .99  # Discount factor on the target Q-values
     startE = 1  # Starting chance of random action
     endE = 0.1  # Final chance of random action
     annealing_steps = 10000.  # How many steps of training to reduce startE to endE.
-    num_episodes = 100  # How many episodes of game environment to train network with.
+    num_episodes = 1000  # How many episodes of game environment to train network with.
     pre_train_steps = 1000  # How many steps of random actions before training begins.
-    # max_epLength = 50 #The max allowed length of our episode.
     load_model = False  # Whether to load a saved model.
-    path = "./dqn"  # The path to save our model to.
-
     tau = 0.001  # Rate to update target network toward primary network
-
     gamma = 0.9
     start_eps = 1.
     end_eps = 0.1
     max_episode_length = 400
     target_update_rate = 0.001
-
     eps = start_eps
     step_drop = (start_eps - end_eps) / annealing_steps
-
-
 
     #create buffers
     j_list = []
@@ -133,9 +71,19 @@ if __name__ == '__main__':
     myBuffer = EpisodesBuffer()
     total_steps = 0
 
-    actor_network = Qnetwork()
-    target_network = Qnetwork()
+    #create DQNs
+    actor_network = Qnetwork(number_of_steps=number_of_steps,
+                             features=features,
+                             number_of_lstm_units=number_of_lstm_units,
+                             OUTPUT_DIM=OUTPUT_DIM)
+    target_network = Qnetwork(number_of_steps=number_of_steps,
+                             features=features,
+                             number_of_lstm_units=number_of_lstm_units,
+                             OUTPUT_DIM=OUTPUT_DIM)
 
+    actor_network.save_model(path)
+    actor_network.save_weights(path)
+    #training loop
     for i in range(num_episodes):
         print("i: ", i)
         # each episode we reset the env and variables
@@ -148,7 +96,6 @@ if __name__ == '__main__':
         total_reward = 0
         j = 0
         states_buffer = StatesBuffer(number_of_steps)
-
 
         while j<max_episode_length:
             print("j: ",j)
@@ -197,7 +144,7 @@ if __name__ == '__main__':
 
 
                     #get q values from networks
-                    q1=actor_network.get_q(next_state)#todo dor said to change here actor to target network
+                    q1=actor_network.get_q(next_state)
                     q1=np.argmax(q1[0])
 
                     q2 = target_network.get_q(next_state)#according to dor this is the next q value
@@ -224,17 +171,7 @@ if __name__ == '__main__':
 
                     #todo add actions input properly to update weights
 
-                    #orgenize input
-                    #todo fix the arr to input so it gives it properly and not clones all info alreadfy in train_batch
-                    # arr_to_input = []#np.array()
-                    # for a in actions:#a is a list represents 4 timesteps
-                    #     arr_for_one_action = np.zeros((number_of_steps, features))
-                    #     for k in range(number_of_steps):
-                    #         action1 = np.zeros(features)
-                    #         action1[int(a[k])]=1
-                    #         arr_for_one_action[k] = action1
-                    #     arr_to_input.append(arr_for_one_action)
-                    # arr_to_input= np.array(arr_to_input)
+
 
 
 
@@ -256,10 +193,13 @@ if __name__ == '__main__':
         succ_rate_list.append(suc_count/try_count)
         fail_rate_list.append(fail_count / try_count)
         myBuffer.add(steps_buffer.buffer)
+        actor_network.save_weights(path)
+        target_network.load_weights(path)
         j_list.append(j)
         r_list.append(total_reward)
 #print("Percent of succesful episodes: " + str(sum(r_list)/num_episodes) + "%")
 print(succ_rate_list)
+#print plots
 plt.plot(succ_rate_list)
 plt.ylabel('success rate in transmiting on a channel')
 plt.show()

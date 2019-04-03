@@ -5,7 +5,6 @@ import random
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
 import matplotlib.pyplot as plt
-import scipy.misc
 import os
 from tensorflow.contrib import rnn
 from tensorflow.python.ops import math_ops
@@ -14,57 +13,49 @@ from environment.environment import environment
 
 
 
-
-
-from gridworld import gameEnv
-#env = gameEnv(partial=False,size=5)
-env = environment(verbose=True, num_of_users=4, num_of_channels=3)
-#implement network
-
-
 number_of_steps = 200#how many time steps are we training it for
 batch_size = 10#how many examples we show model before updating weights
 features = 8#the input is the size of 8 numbers for now todo
 number_of_lstm_units = 100
 h_size = int((number_of_steps/2)*number_of_lstm_units) #The size of the lstm layer before splitting it into Advantage and Value streams.
 
-
+#env = gameEnv(partial=False,size=5)
+env = environment(verbose=True,num_of_users=4,num_of_channels=3)
+#implement network
 class Qnetwork():
     def __init__(self, h_size):
         tf.reset_default_graph()
-        self.sess = tf.InteractiveSession()
-        self.num_channels = 3
-        self.scalarInput = tf.placeholder(shape=[batch_size, number_of_steps, 2 * self.num_channels + 2], dtype=tf.float32) #4 DIM FOR STATE, NEED TO CHANGE THE ENV STATE.
-        #self.scalarInput = tf.expand_dims(self.scalarInput, axis=2) - No need
-        #self.policy_lstm_cell = rnn.BasicLSTMCell(num_units=100, forget_bias=1.0,reuse=tf.AUTO_REUSE, activation=math_ops.tanh) # TODO adjust the activation function
-        #self.policy_rnnex_t, self.policy_rnn_state = tf.nn.dynamic_rnn(inputs=self.scalarInput, cell=self.policy_lstm_cell, dtype=tf.float32)
-        self.LSTM_layer = tf.keras.layers.LSTM(units=100, activation=None)(self.scalarInput)  # for keras_type layers, you need to add the input outside the arguments
-        # the output shape of LSTM_layer is 100
+        #we create lstm layer at the input of the system
+        self.scalarInput = tf.placeholder(shape=[batch_size, number_of_steps,features], dtype=tf.float32)
+        #elf.scalarInput = tf.expand_dims(self.scalarInput,axis=2)
+        #self.batch_size = tf.Variable(32,trainable=False) # defualt number of batch size, can be altered with a set function
+
+        self.policy_lstm_cell = rnn.BasicLSTMCell(num_units=number_of_lstm_units, forget_bias=1.0, activation=math_ops.tanh, reuse=tf.get_variable_scope().reuse) # TODO adjust the activation function
+        self.policy_rnnex_t, self.policy_rnn_state = tf.nn.dynamic_rnn(inputs=self.scalarInput, cell=self.policy_lstm_cell, dtype=tf.float32)
+
+
+
+
 
         # We take the output from the lstm layer and split it into separate advantage and value streams.
-        self.streamAC, self.streamVC = tf.split(self.LSTM_layer, [50, 50], -1)
-        print("LSTM layer shape is {}".format(self.sess.run(tf.shape(self.LSTM_layer))))
-        print("streamAC layer shape is {}".format(self.sess.run(tf.shape(self.streamAC))))
-        print("streamVC layer shape is {}".format(self.sess.run(tf.shape(self.streamVC))))
-        #self.streamA = slim.flatten(self.streamAC)
-        #self.streamV = slim.flatten(self.streamVC)
+        self.streamAC, self.streamVC = tf.split(self.policy_rnnex_t, 2, 1)
+        self.streamA = slim.flatten(self.streamAC)
+        self.streamV = slim.flatten(self.streamVC)
         xavier_init = tf.contrib.layers.xavier_initializer()
-        #self.AW = tf.Variable(xavier_init([h_size, env.actions]))
-        #self.VW = tf.Variable(xavier_init([h_size, 1]))
-        #self.Advantage = tf.matmul(self.streamA, self.AW)
-        #self.Value = tf.matmul(self.streamV, self.VW)
-        self.advantage_layer = tf.layers.dense(inputs=self.streamAC, units=10)
-        self.value_layer = tf.layers.dense(inputs=self.streamVC, units=10)
-        print("advantage_layer layer shape is {}".format(self.sess.run(tf.shape(self.advantage_layer))))
-        print("value_layer layer shape is {}".format(self.sess.run(tf.shape(self.value_layer))))
+        self.AW = tf.Variable(xavier_init([h_size , env.actions]))
+        self.VW = tf.Variable(xavier_init([h_size , env.actions]))
+        self.Advantage = tf.matmul(self.streamA, self.AW)
+        self.Value = tf.matmul(self.streamV, self.VW)
+
+
         # Then combine them together to get our final Q-values.
-        self.Qout = self.value_layer + tf.subtract(self.advantage_layer, tf.reduce_mean(self.value_layer, axis=1, keep_dims=True))
+        self.Qout = self.Value + tf.subtract(self.Advantage, tf.reduce_mean(self.Advantage, axis=1, keep_dims=True))
         self.predict = tf.argmax(self.Qout, 1)
 
         # Below we obtain the loss by taking the sum of squares difference between the target and prediction Q values.
         self.targetQ = tf.placeholder(shape=[None], dtype=tf.float32)
         self.actions = tf.placeholder(shape=[None], dtype=tf.int32)
-        self.actions_onehot = tf.one_hot(self.actions, 10, dtype=tf.float32)#todo 10 used to be env.actions
+        self.actions_onehot = tf.one_hot(self.actions, env.actions, dtype=tf.float32)
 
         self.Q = tf.reduce_sum(tf.multiply(self.Qout, self.actions_onehot), axis=1)
 
@@ -72,6 +63,7 @@ class Qnetwork():
         self.loss = tf.reduce_mean(self.td_error)
         self.trainer = tf.train.AdamOptimizer(learning_rate=0.0001)
         self.updateModel = self.trainer.minimize(self.loss)
+
 
 #functions
 class experience_buffer():
@@ -96,6 +88,7 @@ def updateTargetGraph(tfVars,tau):
     op_holder = []
     for idx,var in enumerate(tfVars[0:total_vars//2]):
         va = var.value()
+        vi = tfVars[idx+total_vars//2].value()
         op_holder.append(tfVars[idx+total_vars//2].assign((var.value()*tau) + ((1-tau)*tfVars[idx+total_vars//2].value())))
     return op_holder
 
@@ -116,10 +109,10 @@ pre_train_steps = 10000 #How many steps of random actions before training begins
 max_epLength = 50 #The max allowed length of our episode.
 load_model = False #Whether to load a saved model.
 path = "./dqn" #The path to save our model to.
-#h_size = 400 #The size of the final convolutional layer before splitting it into Advantage and Value streams.
+
 tau = 0.001 #Rate to update target network toward primary network
 
-tf.reset_default_graph()
+#tf.reset_default_graph()
 mainQN = Qnetwork(h_size)
 targetQN = Qnetwork(h_size)
 
@@ -199,7 +192,7 @@ with tf.Session() as sess:
                                  feed_dict={mainQN.scalarInput: np.vstack(trainBatch[:, 0]), mainQN.targetQ: targetQ,
                                             mainQN.actions: trainBatch[:, 1]})
 
-                 #   updateTarget(targetOps, sess)  # Update the target network toward the primary network.
+                    updateTarget(targetOps, sess)  # Update the target network toward the primary network.
             rAll += r
             s = s1
 

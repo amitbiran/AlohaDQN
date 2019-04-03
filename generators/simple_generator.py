@@ -1,5 +1,4 @@
-from Agent import Agent
-import random
+from Agents.Agent import Agent
 from policies.random_policy import random_policy
 from Channel import Channel
 class Simple_Generator(object):
@@ -14,7 +13,7 @@ class Simple_Generator(object):
             agent_arr = []
             for j in range(self.n_channels):
                 agent_arr.append(1)
-            agents_list.append(Agent(agent_arr,agent_arr,rp.take_action,i))
+            agents_list.append(Agent(agent_arr,agent_arr,i,random_policy()))
         return agents_list
 
     def generate_channels(self):

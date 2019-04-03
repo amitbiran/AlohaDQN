@@ -1,6 +1,5 @@
 import numpy as np
-import random
-from states_buffer import StatesBuffer
+from buffers.states_buffer import StatesBuffer
 
 class StepsBuffer():
     def __init__(self,number_of_steps, buffer_size=50000):

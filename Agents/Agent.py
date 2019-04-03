@@ -1,0 +1,21 @@
+class Agent(object):
+
+    def __init__(self,in_channel,out_channel,id,policy):
+        self.in_channel = in_channel
+        self.out_channel = out_channel
+       # self.take_action = take_action
+        self.id = id
+        self.policy = policy
+
+    def take_action(self,item):
+        return self.policy.take_action(item)
+
+    def get_in_channel(self):
+        return self.in_channel
+
+    def get_out_channel(self):
+        return self.out_channel
+
+    def after_step(self,state):
+        pass
+
