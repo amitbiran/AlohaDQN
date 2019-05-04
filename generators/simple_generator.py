@@ -23,5 +23,9 @@ class Simple_Generator(object):
         return channels_list
 
 
+    def add_items(self,item1,item2):
+        pass
+
+
 
 

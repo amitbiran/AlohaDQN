@@ -2,27 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f52b105d-64b8-4d87-a6b8-b174d2ed1a7d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Agents/DqnAgent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Agents/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Qnetwork.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buffers/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generators/dqn_generator.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/policies/dqn_policy.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirments.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Agents/MarkovAgent.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/generators/markov_generator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/Agents/Agent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EpisodesBuffer.py" beforeDir="false" afterPath="$PROJECT_DIR$/buffers/EpisodesBuffer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StepsBuffer.py" beforeDir="false" afterPath="$PROJECT_DIR$/buffers/StepsBuffer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dual_dqn.py" beforeDir="false" afterPath="$PROJECT_DIR$/temps/dual_dqn_temp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Agents/Agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/Agents/Agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Agents/DqnAgent.py" beforeDir="false" afterPath="$PROJECT_DIR$/Agents/DqnAgent.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dual_dqn_keras.py" beforeDir="false" afterPath="$PROJECT_DIR$/dual_dqn_keras.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/environment/environment.py" beforeDir="false" afterPath="$PROJECT_DIR$/environment/environment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generators/random_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Agents/DqnAgent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generators/dqn_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/generators/dqn_generator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/generators/simple_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/generators/simple_generator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gridworld.py" beforeDir="false" afterPath="$PROJECT_DIR$/temps/gridworld_temp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning_environment.py" beforeDir="false" afterPath="$PROJECT_DIR$/temps/learning_environment_temp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/onefile.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/policies/policy.py" beforeDir="false" afterPath="$PROJECT_DIR$/policies/policy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/states_buffer.py" beforeDir="false" afterPath="$PROJECT_DIR$/buffers/states_buffer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/topologics/random_topology.py" beforeDir="false" afterPath="$PROJECT_DIR$/topologics/random_topology.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,10 +24,10 @@
     <SUITE FILE_PATH="coverage/AlohaDQN$temp.coverage" NAME="temp Coverage Results" MODIFIED="1553699251132" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AlohaDQN$onefile.coverage" NAME="onefile Coverage Results" MODIFIED="1551882713537" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AlohaDQN$states_buffer.coverage" NAME="states_buffer Coverage Results" MODIFIED="1553693686061" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/AlohaDQN$temp__1_.coverage" NAME="temp (1) Coverage Results" MODIFIED="1554286373864" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/temps" />
+    <SUITE FILE_PATH="coverage/AlohaDQN$temp__1_.coverage" NAME="temp (1) Coverage Results" MODIFIED="1555930644152" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/temps" />
     <SUITE FILE_PATH="coverage/AlohaDQN$simple_topology.coverage" NAME="simple_topology Coverage Results" MODIFIED="1543076192806" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/topologics" />
     <SUITE FILE_PATH="coverage/AlohaDQN$dual_dqn.coverage" NAME="dual_dqn Coverage Results" MODIFIED="1551876252229" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/AlohaDQN$dual_dqn_keras.coverage" NAME="dual_dqn_keras Coverage Results" MODIFIED="1554293996054" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/AlohaDQN$dual_dqn_keras.coverage" NAME="dual_dqn_keras Coverage Results" MODIFIED="1556968955567" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/AlohaDQN$demo.coverage" NAME="demo Coverage Results" MODIFIED="1543060873411" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
@@ -59,19 +48,23 @@
     <session id="842274476">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="7" />
+          <entry key="project.closed" value="11" />
           <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.12" value="1" />
+          <entry key="project.open.time.14" value="1" />
           <entry key="project.open.time.23" value="1" />
           <entry key="project.open.time.33" value="1" />
           <entry key="project.open.time.41" value="1" />
+          <entry key="project.open.time.42" value="1" />
           <entry key="project.open.time.43" value="1" />
-          <entry key="project.open.time.48" value="1" />
+          <entry key="project.open.time.48" value="2" />
+          <entry key="project.open.time.54" value="1" />
           <entry key="project.open.time.55" value="1" />
+          <entry key="project.open.time.56" value="1" />
           <entry key="project.open.time.57" value="1" />
           <entry key="project.open.time.89" value="1" />
           <entry key="project.open.time.96" value="1" />
-          <entry key="project.opened" value="11" />
+          <entry key="project.opened" value="16" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -79,35 +72,35 @@
           <entry key="csv" value="2" />
           <entry key="json" value="2" />
           <entry key="png" value="1" />
-          <entry key="py" value="110" />
+          <entry key="py" value="128" />
           <entry key="requirments" value="1" />
-          <entry key="txt" value="6" />
+          <entry key="txt" value="7" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Image" value="1" />
           <entry key="JSON" value="2" />
-          <entry key="PLAIN_TEXT" value="9" />
-          <entry key="Python" value="110" />
+          <entry key="PLAIN_TEXT" value="10" />
+          <entry key="Python" value="128" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="28" />
-          <entry key="py" value="18686" />
-          <entry key="txt" value="233" />
+          <entry key="py" value="23543" />
+          <entry key="txt" value="275" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="261" />
-          <entry key="Python" value="18686" />
+          <entry key="PLAIN_TEXT" value="303" />
+          <entry key="Python" value="23543" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages">
         <counts>
-          <entry key="git.branch.rebase" value="1" />
+          <entry key="git.branch.rebase" value="3" />
         </counts>
       </usages-collector>
     </session>
@@ -115,108 +108,45 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/environment/environment.py">
+        <entry file="file://$PROJECT_DIR$/dual_dqn_keras.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1342">
-              <caret line="61" selection-start-line="61" selection-end-line="61" />
+            <state relative-caret-position="-140">
+              <caret line="143" selection-start-line="143" selection-end-line="143" />
               <folding>
-                <element signature="e#0#56#0" expanded="true" />
+                <element signature="e#0#31#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/generators/dqn_generator.py">
+        <entry file="file://$PROJECT_DIR$/environment/environment.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="484">
-              <caret line="22" column="58" lean-forward="true" selection-start-line="22" selection-start-column="58" selection-end-line="22" selection-end-column="58" />
+            <state relative-caret-position="205">
+              <caret line="86" column="67" lean-forward="true" selection-start-line="86" selection-start-column="67" selection-end-line="86" selection-end-column="67" />
               <folding>
                 <element signature="e#0#56#0" expanded="true" />
-                <marker date="1554294702404" expanded="true" signature="220:336" ph="..." />
-                <marker date="1554294702404" expanded="true" signature="331:332" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/policies/dqn_policy.py">
+        <entry file="file://$PROJECT_DIR$/topologics/random_topology.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+            <state relative-caret-position="-79">
+              <caret line="31" column="45" selection-start-line="31" selection-start-column="45" selection-end-line="31" selection-end-column="45" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Agents/MarkovAgent.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="442">
+              <caret line="31" selection-start-line="31" selection-end-line="31" />
               <folding>
-                <element signature="e#0#34#0" expanded="true" />
-                <marker date="1554292984983" expanded="true" signature="80:81" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Agents/DqnAgent.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="132">
-              <caret line="6" column="54" selection-start-line="6" selection-start-column="48" selection-end-line="6" selection-end-column="54" />
-              <folding>
-                <element signature="e#1#31#0" expanded="true" />
-                <marker date="1554294112140" expanded="true" signature="121:780" ph="..." />
-                <marker date="1554294112140" expanded="true" signature="188:474" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/buffers/states_buffer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="16" selection-start-line="16" selection-start-column="2" selection-end-line="29" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/policies/policy.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="35" lean-forward="true" selection-start-column="35" selection-end-column="35" />
-              <folding>
-                <marker date="1554292595821" expanded="true" signature="80:99" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/generators/simple_generator.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="44">
-              <caret line="4" column="41" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Agents/Agent.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="18" column="4" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="31" />
-              <folding>
-                <marker date="1554294083554" expanded="true" signature="277:328" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/temps/dual_dqn_temp.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="616">
-              <caret line="28" column="104" selection-start-line="28" selection-start-column="104" selection-end-line="28" selection-end-column="104" />
-              <folding>
-                <element signature="e#0#31#0" expanded="true" />
-                <marker date="1554284881270" expanded="true" signature="3584:3589" ph="..." />
+                <element signature="e#0#30#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -233,36 +163,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>.add</find>
-      <find>success</find>
-      <find>-&gt; 0.4</find>
-      <find>episodeBuffer</find>
-      <find>succ_rate_list.</find>
-      <find>loss:</find>
-      <find>loss: 0.5</find>
-      <find>-&gt; 0.3</find>
-      <find>-&gt;</find>
-      <find>NUM_OF_CHANNELS</find>
-      <find>build_model</find>
-      <find>env</find>
-      <find>get</find>
-      <find>get_q</find>
-      <find>get_Q</find>
+      <find>transmiting</find>
+      <find>value of q is</find>
+      <find>state</find>
+      <find>save_</find>
+      <find>general</find>
+      <find>out of</find>
+      <find>after</find>
+      <find>info</find>
+      <find>env.step</find>
+      <find>self.dqn</find>
+      <find>channel</find>
+      <find>rese</find>
+      <find>reset</find>
       <find>0.1</find>
-      <find>.fit</find>
-      <find>action</find>
-      <find>step</find>
-      <find>QLayer</find>
-      <find>number_of_lstm_unitsnumber_of_lstm_units</find>
-      <find>tau</find>
-      <find>saver</find>
-      <find>json</find>
-      <find>dtype</find>
-      <find>i:</find>
-      <find>path</find>
       <find>succ</find>
-      <find>loss</find>
-      <find>.step</find>
+      <find>count</find>
+      <find>======</find>
+      <find>success</find>
+      <find>reward(</find>
+      <find>gave_up_non_available_count</find>
+      <find>-3</find>
+      <find>reward</find>
+      <find>sent</find>
+      <find>create</find>
+      <find>[0]</find>
+      <find>0.2</find>
+      <find>-4</find>
+      <find>0.5</find>
+      <find>after_step</find>
+      <find>i:</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -287,7 +217,6 @@
         <option value="$PROJECT_DIR$/topologics/base_topology.py" />
         <option value="$PROJECT_DIR$/dual_dqn.py" />
         <option value="$PROJECT_DIR$/onefile.py" />
-        <option value="$PROJECT_DIR$/topologics/random_topology.py" />
         <option value="$PROJECT_DIR$/pima-indians-diabetes.csv" />
         <option value="$PROJECT_DIR$/StepsBuffer.py" />
         <option value="$PROJECT_DIR$/EpisodesBuffer.py" />
@@ -296,17 +225,20 @@
         <option value="$PROJECT_DIR$/temp.py" />
         <option value="$PROJECT_DIR$/temps/pima-indians-diabetes.csv" />
         <option value="$PROJECT_DIR$/temps/dual_dqn_temp.py" />
-        <option value="$PROJECT_DIR$/temps/temp.py" />
         <option value="$PROJECT_DIR$/Qnetwork.py" />
-        <option value="$PROJECT_DIR$/dual_dqn_keras.py" />
-        <option value="$PROJECT_DIR$/policies/random_policy.py" />
-        <option value="$PROJECT_DIR$/environment/environment.py" />
         <option value="$PROJECT_DIR$/policies/policy.py" />
         <option value="$PROJECT_DIR$/policies/dqn_policy.py" />
-        <option value="$PROJECT_DIR$/Agents/Agent.py" />
-        <option value="$PROJECT_DIR$/Agents/DqnAgent.py" />
         <option value="$PROJECT_DIR$/generators/simple_generator.py" />
         <option value="$PROJECT_DIR$/generators/dqn_generator.py" />
+        <option value="$PROJECT_DIR$/Agents/DqnAgent.py" />
+        <option value="$PROJECT_DIR$/policies/random_policy.py" />
+        <option value="$PROJECT_DIR$/Agents/Agent.py" />
+        <option value="$PROJECT_DIR$/generators/markov_generator.py" />
+        <option value="$PROJECT_DIR$/temps/temp.py" />
+        <option value="$PROJECT_DIR$/Agents/MarkovAgent.py" />
+        <option value="$PROJECT_DIR$/dual_dqn_keras.py" />
+        <option value="$PROJECT_DIR$/environment/environment.py" />
+        <option value="$PROJECT_DIR$/topologics/random_topology.py" />
       </list>
     </option>
   </component>
@@ -317,17 +249,16 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="77" />
-    <option name="y" value="-8" />
-    <option name="width" value="1554" />
-    <option name="height" value="462" />
+    <option name="x" value="404" />
+    <option name="y" value="146" />
+    <option name="width" value="1100" />
+    <option name="height" value="580" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -335,15 +266,11 @@
               <item name="AlohaDQN" type="b2602c69:ProjectViewProjectNode" />
               <item name="AlohaDQN" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="AlohaDQN" type="b2602c69:ProjectViewProjectNode" />
-              <item name="AlohaDQN" type="462c0819:PsiDirectoryNode" />
-              <item name="generators" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -527,23 +454,38 @@
       <option name="project" value="LOCAL" />
       <updated>1554216953172</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="before changing environment to support dqn">
+      <created>1554294879205</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1554294879205</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
+  </component>
+  <component name="TodoView" selected-index="4">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15031983" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.09754797" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.329718" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49798658" visible="true" weight="0.335141" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4986577" weight="0.37093276" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49798658" visible="true" weight="0.27114967" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4986577" weight="0.2537961" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.329718" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5013423" side_tool="true" weight="0.3319149" />
       <window_info anchor="bottom" id="Python Console" order="8" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.16891892" />
@@ -556,8 +498,8 @@
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
       <window_info anchor="right" id="Data View" order="4" visible="true" weight="0.007518797" />
-      <window_info anchor="right" id="Database" order="5" weight="0.32942432" />
-      <window_info anchor="right" id="SciView" order="6" weight="0.29744136" />
+      <window_info anchor="right" id="Database" order="5" weight="0.32885906" />
+      <window_info anchor="right" id="SciView" order="6" weight="0.48933902" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -598,7 +540,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="working training" />
     <MESSAGE value="managed to train model for simple usecase &#10;i need to:&#10;1. change nev to make agents act like my agent&#10;2.save my weights on the side" />
-    <option name="LAST_COMMIT_MESSAGE" value="managed to train model for simple usecase &#10;i need to:&#10;1. change nev to make agents act like my agent&#10;2.save my weights on the side" />
+    <MESSAGE value="before changing environment to support dqn" />
+    <option name="LAST_COMMIT_MESSAGE" value="before changing environment to support dqn" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -614,24 +557,34 @@
           <option name="timeStamp" value="43" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/temps/temp.py</url>
-          <line>37</line>
-          <option name="timeStamp" value="131" />
+          <url>file://$PROJECT_DIR$/Agents/Agent.py</url>
+          <line>20</line>
+          <option name="timeStamp" value="182" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/temps/temp.py</url>
-          <line>48</line>
-          <option name="timeStamp" value="132" />
+          <line>11</line>
+          <option name="timeStamp" value="196" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/temps/temp.py</url>
-          <line>27</line>
-          <option name="timeStamp" value="150" />
+          <line>39</line>
+          <option name="timeStamp" value="199" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/dual_dqn_keras.py</url>
-          <line>114</line>
-          <option name="timeStamp" value="159" />
+          <url>file://$PROJECT_DIR$/temps/temp.py</url>
+          <line>24</line>
+          <option name="timeStamp" value="201" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/temps/temp.py</url>
+          <line>23</line>
+          <option name="timeStamp" value="202" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Agents/MarkovAgent.py</url>
+          <line>31</line>
+          <option name="timeStamp" value="204" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -650,6 +603,8 @@
         <watch expression="arr_to_input[8]" />
         <watch expression="pre_train_steps" />
         <watch expression="OUTPUT_DIM" />
+        <watch expression="self.agents" />
+        <watch expression="ack_arr" />
       </configuration>
     </watches-manager>
   </component>
@@ -663,48 +618,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/tensorflow/python/ops/rnn_cell_impl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="640" column="6" selection-start-line="640" selection-start-column="6" selection-end-line="640" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/keras/engine/training_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2574">
-          <caret line="127" selection-start-line="127" selection-end-line="127" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/tensorflow/python/ops/array_ops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50094">
-          <caret line="2303" column="4" selection-start-line="2303" selection-start-column="4" selection-end-line="2303" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/tensorflow/python/ops/math_ops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3784">
-          <caret line="201" column="4" selection-start-line="201" selection-start-column="4" selection-end-line="201" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/keras/layers/recurrent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="124">
-          <caret line="2129" column="22" selection-start-line="2129" selection-start-column="22" selection-end-line="2129" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/keras/layers/merge.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="267" column="6" selection-start-line="267" selection-start-column="6" selection-end-line="267" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/numpy/random/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-132" />
@@ -773,16 +686,7 @@
     <entry file="file://$PROJECT_DIR$/work.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/onefile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2156">
-          <caret line="98" selection-start-line="98" selection-end-line="98" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/onefile.py" />
     <entry file="file://$PROJECT_DIR$/temps/learning_environment_temp.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
@@ -793,9 +697,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/requirments">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/requirments" />
     <entry file="file://$PROJECT_DIR$/requirments.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
@@ -813,18 +715,14 @@
     <entry file="file://$PROJECT_DIR$/temps/model.json">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/temps/dqn/2019-04-03 12-27-04.022763 - model/general_variables.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/temps/dqn/2019-04-03 12-27-04.022763 - model/general_variables.txt" />
     <entry file="file://$PROJECT_DIR$/temps/dqn/2019-04-03 12-27-35.449608 - model/general_variables.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/temps/dqn/2019-04-03 12-27-59.257579 - model/general_variables.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/dqn/2019-04-03 12-30-00.059847 - model/general_variables.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/dqn/2019-04-03 12-30-00.059847 - model/general_variables.txt" />
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/keras/engine/training.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="177">
@@ -860,36 +758,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dqn/2019-04-03 13-23-35.811696 - model/model.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/temps/temp.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="53" selection-start-line="53" selection-end-line="53" selection-end-column="40" />
-          <folding>
-            <element signature="e#58#93#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Qnetwork.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="61" column="26" selection-start-line="61" selection-start-column="26" selection-end-line="61" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/topologics/random_topology.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/dqn/2019-04-03 13-23-35.811696 - model/model.json" />
     <entry file="file://$PROJECT_DIR$/Channel.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -907,16 +776,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dual_dqn_keras.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="113" column="48" selection-start-line="113" selection-start-column="43" selection-end-line="113" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/buffers/states_buffer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="352">
@@ -927,20 +786,97 @@
     <entry file="file://$PROJECT_DIR$/policies/policy.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="35" lean-forward="true" selection-start-column="35" selection-end-column="35" />
+          <caret column="35" selection-start-column="35" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/random_generator.py" />
+    <entry file="file://$PROJECT_DIR$/temps/dual_dqn_temp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="17" column="56" selection-start-line="17" selection-start-column="56" selection-end-line="17" selection-end-column="56" />
           <folding>
-            <marker date="1554292595821" expanded="true" signature="80:99" ph="..." />
+            <element signature="e#0#31#0" expanded="true" />
+            <marker date="1554294769389" expanded="true" signature="3584:3589" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/temps/dual_dqn_temp.py">
+    <entry file="file://$PROJECT_DIR$/Qnetwork.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="28" column="104" selection-start-line="28" selection-start-column="104" selection-end-line="28" selection-end-column="104" />
+        <state relative-caret-position="1210">
+          <caret line="63" column="8" selection-start-line="63" selection-start-column="8" selection-end-line="63" selection-end-column="8" />
           <folding>
-            <element signature="e#0#31#0" expanded="true" />
-            <marker date="1554284881270" expanded="true" signature="3584:3589" ph="..." />
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/policies/dqn_policy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dqn/2019-04-03 17-02-26.308956 - model/general_variables.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/tensorflow/python/client/session.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1350">
+          <caret line="1351" selection-start-line="1351" selection-end-line="1351" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/tensorflow/python/framework/errors_impl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="436">
+          <caret line="532" selection-start-line="532" selection-end-line="532" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Agents/DqnAgent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="15" column="29" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/tensorflow/python/ops/gen_data_flow_ops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="458">
+          <caret line="5410" selection-start-line="5410" selection-end-line="5410" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/dqn_generator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="12" column="4" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Agents/Agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/temps/temp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="332">
+          <caret line="21" column="20" selection-start-line="21" selection-start-column="20" selection-end-line="21" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/simple_generator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44">
+          <caret line="4" column="1" lean-forward="true" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -948,74 +884,54 @@
     <entry file="file://$PROJECT_DIR$/policies/random_policy.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
-          <caret line="5" column="54" selection-start-line="5" selection-start-column="54" selection-end-line="5" selection-end-column="54" />
+          <caret line="5" column="25" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generators/markov_generator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="13" column="11" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
           <folding>
-            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#0#56#0" expanded="true" />
+            <marker date="1556969339734" expanded="true" signature="270:271" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dual_dqn_keras.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-140">
+          <caret line="143" selection-start-line="143" selection-end-line="143" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Agents/MarkovAgent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="31" selection-start-line="31" selection-end-line="31" />
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/topologics/random_topology.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-79">
+          <caret line="31" column="45" selection-start-line="31" selection-start-column="45" selection-end-line="31" selection-end-column="45" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/environment/environment.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1342">
-          <caret line="61" selection-start-line="61" selection-end-line="61" />
+        <state relative-caret-position="205">
+          <caret line="86" column="67" lean-forward="true" selection-start-line="86" selection-start-column="67" selection-end-line="86" selection-end-column="67" />
           <folding>
             <element signature="e#0#56#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generators/random_generator.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generators/simple_generator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="4" column="41" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Agents/Agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="18" column="4" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="31" />
-          <folding>
-            <marker date="1554294083554" expanded="true" signature="277:328" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/policies/dqn_policy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-            <marker date="1554292984983" expanded="true" signature="80:81" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Agents/DqnAgent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="6" column="54" selection-start-line="6" selection-start-column="48" selection-end-line="6" selection-end-column="54" />
-          <folding>
-            <element signature="e#1#31#0" expanded="true" />
-            <marker date="1554294112140" expanded="true" signature="121:780" ph="..." />
-            <marker date="1554294112140" expanded="true" signature="188:474" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generators/dqn_generator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="22" column="58" lean-forward="true" selection-start-line="22" selection-start-column="58" selection-end-line="22" selection-end-column="58" />
-          <folding>
-            <element signature="e#0#56#0" expanded="true" />
-            <marker date="1554294702404" expanded="true" signature="220:336" ph="..." />
-            <marker date="1554294702404" expanded="true" signature="331:332" ph="..." />
           </folding>
         </state>
       </provider>

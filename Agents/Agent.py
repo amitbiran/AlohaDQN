@@ -8,7 +8,8 @@ class Agent(object):
         self.policy = policy
 
     def take_action(self,item):
-        return self.policy.take_action(item)
+        print (self.id)
+        return self.id+1#self.policy.take_action(item)
 
     def get_in_channel(self):
         return self.in_channel
@@ -16,6 +17,7 @@ class Agent(object):
     def get_out_channel(self):
         return self.out_channel
 
-    def after_step(self,state):
-        pass
+    def after_step(self,state,reward):
+        i=0
+
 

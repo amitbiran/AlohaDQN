@@ -11,8 +11,8 @@ import datetime
 import os
 
 countt=0
-NUM_OF_CHANNELS = 5
-number_of_steps = 5#how many time steps are we training it for
+NUM_OF_CHANNELS = 2
+number_of_steps = 3#how many time steps are we training it for
 batch_size = 10#how many examples we show model before updating weights
 features = 2 * NUM_OF_CHANNELS + 2
 OUTPUT_DIM = NUM_OF_CHANNELS + 1
@@ -43,7 +43,12 @@ if __name__ == '__main__':
         f.write("h_size = {}\n".format(h_size))
 
     #create env
-    env = environment(verbose=True, num_of_users=4, num_of_channels=NUM_OF_CHANNELS)
+    env_network = Qnetwork(number_of_steps=number_of_steps,
+                             features=features,
+                             number_of_lstm_units=number_of_lstm_units,
+                             OUTPUT_DIM=OUTPUT_DIM)
+    env_shape = (batch_size,number_of_steps,features)
+    env = environment(verbose=True, num_of_users=2, num_of_channels=NUM_OF_CHANNELS,dqn=env_network,shape=env_shape,path = path)
 
     #general params
     update_freq = 4  # How often to perform a training step.
@@ -51,7 +56,7 @@ if __name__ == '__main__':
     startE = 1  # Starting chance of random action
     endE = 0.1  # Final chance of random action
     annealing_steps = 10000.  # How many steps of training to reduce startE to endE.
-    num_episodes = 1000  # How many episodes of game environment to train network with.
+    num_episodes = 100 # How many episodes of game environment to train network with.
     pre_train_steps = 1000  # How many steps of random actions before training begins.
     load_model = False  # Whether to load a saved model.
     tau = 0.001  # Rate to update target network toward primary network
@@ -68,6 +73,9 @@ if __name__ == '__main__':
     r_list = []
     succ_rate_list = []
     fail_rate_list = []
+    sent_rate_list =[]
+    succ_out_of_sent_list = []
+    collide_count_list =[]
     myBuffer = EpisodesBuffer()
     total_steps = 0
 
@@ -90,6 +98,10 @@ if __name__ == '__main__':
         steps_buffer = StepsBuffer(number_of_steps=number_of_steps)
         state = env.reset()
         suc_count = 0
+        sent_count =0
+        collide_count =0
+        gave_up_non_available_count =0
+        gave_up_is_available_count =0
         fail_count = 0
         try_count = 0
         done = False
@@ -167,45 +179,73 @@ if __name__ == '__main__':
                     q=actor_network.get_q(this_state)#feed state to main network
                     print("value of q is: ", q)
 
-
-
-                    #todo add actions input properly to update weights
-
-
-
-
-
-
                     actor_network.model.fit(this_state,target_batch)
                     print("fit done: ",countt)
                     countt+=1
             state=state1
             states_buffer.add(state)
             total_reward+=reward
-            if(reward == 0):
+            if(reward <= -1):
                 fail_count +=1
-            if(reward == 1):
+                collide_count +=1
+                sent_count +=1
+            if(reward == 2 ):
                 suc_count+=1
+                sent_count +=1
+            if(reward == -0.5):
+                gave_up_is_available_count +=1
+            if(reward == 0.5):
+
+                gave_up_non_available_count +=1
             try_count+=1
+
+            with open(os.path.join(path, "actions taken.txt"), "a+") as f:
+                f.read()
+                f.write("{} transmited on {} reward is {}\n".format(info["channel state"],action,reward))
 
 
         print("success {} out of {} -> {}".format(str(suc_count),str(try_count),str(suc_count/try_count)))
+        print("success {} out of sent {}".format(str(suc_count),str(sent_count)))
+        sent_rate_list.append(sent_count/try_count)
+        succ_out_of_sent_list.append(suc_count/sent_count)
+        collide_count_list.append(fail_count/sent_count)
         succ_rate_list.append(suc_count/try_count)
         fail_rate_list.append(fail_count / try_count)
         myBuffer.add(steps_buffer.buffer)
         actor_network.save_weights(path)
         target_network.load_weights(path)
+        #env.after_episode()
         j_list.append(j)
         r_list.append(total_reward)
+
 #print("Percent of succesful episodes: " + str(sum(r_list)/num_episodes) + "%")
 print(succ_rate_list)
 #print plots
 plt.plot(succ_rate_list)
 plt.ylabel('success rate in transmiting on a channel')
+plt.savefig(os.path.join(path, 'success.png'))
 plt.show()
+
 plt.plot(fail_rate_list)
 plt.ylabel('fail rate in transmiting on a channel')
+plt.savefig(os.path.join(path, 'fail.png'))
 plt.show()
+
+plt.plot(sent_rate_list)
+plt.ylabel('sent rate out of steps')
+plt.savefig(os.path.join(path, 'sent_rate.png'))
+plt.show()
+
+plt.plot(succ_out_of_sent_list)
+plt.ylabel('success rate in transmiting on a channel out of all sent tries')
+plt.savefig(os.path.join(path, 'succ_out_of_sent.png'))
+plt.show()
+
+plt.plot(collide_count_list)
+plt.ylabel('collide count rate out of sent')
+plt.savefig(os.path.join(path, 'collide rate.png'))
+plt.show()
+
 
 
 

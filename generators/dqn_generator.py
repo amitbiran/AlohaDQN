@@ -1,12 +1,14 @@
 from generators.simple_generator import Simple_Generator
 from policies.dqn_policy import DqnPolicy
-from Agents import DqnAgent
+from Agents.DqnAgent import DqnAgent
 
 class Dqn_Generator(Simple_Generator):
-    def __init__(self,n_agents,n_channels,dqn,shape):
-        Simple_Generator.__init__(self,n_agents,n_channels)
-        self.dqn = dqn
-        self.shape = shape
+    dqn=None
+    shape = None
+
+    def add_items(self,item1,item2):
+        self.dqn = item1
+        self.shape = item2
 
     def generate_agents(self):
         #dp = DqnPolicy()
