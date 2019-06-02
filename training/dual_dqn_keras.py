@@ -3,10 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 #%matplotlib inline
 from environment.environment import environment
-from buffers.states_buffer import StatesBuffer
-from buffers.StepsBuffer import StepsBuffer
-from buffers.EpisodesBuffer import EpisodesBuffer
-from Qnetwork import Qnetwork
+from environment.buffers.states_buffer import StatesBuffer
+from environment.buffers.StepsBuffer import StepsBuffer
+from environment.buffers.EpisodesBuffer import EpisodesBuffer
+from training.Qnetwork import Qnetwork
 import datetime
 import os
 
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     startE = 1  # Starting chance of random action
     endE = 0.1  # Final chance of random action
     annealing_steps = 10000.  # How many steps of training to reduce startE to endE.
-    num_episodes = 100 # How many episodes of game environment to train network with.
+    num_episodes = 10 # How many episodes of game environment to train network with.
     pre_train_steps = 1000  # How many steps of random actions before training begins.
     load_model = False  # Whether to load a saved model.
     tau = 0.001  # Rate to update target network toward primary network
@@ -165,7 +165,7 @@ if __name__ == '__main__':
                     target_batch = target_network.get_q(this_state)
 
 
-                    end_multiplier = 1#-(dones - 1)todo for now need to fix that
+                    end_multiplier = 1
                     double_q = q2[q1]
                     target_q = rewards + (gamma*double_q*end_multiplier)
                    # print(target_q.shape)

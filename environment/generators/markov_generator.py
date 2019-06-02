@@ -1,8 +1,6 @@
-from generators.simple_generator import Simple_Generator
-from Agents.MarkovAgent import MarkovAgent
-from policies.dqn_policy import DqnPolicy
-from Agents.DqnAgent import DqnAgent
-from policies.random_policy import random_policy
+from environment.generators.simple_generator import Simple_Generator
+from environment.Agents.MarkovAgent import MarkovAgent
+from environment.policies.random_policy import random_policy
 
 class Markov_Generator(Simple_Generator):
     def generate_agents(self):

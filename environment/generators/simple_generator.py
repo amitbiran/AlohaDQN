@@ -1,6 +1,6 @@
-from Agents.Agent import Agent
-from policies.random_policy import random_policy
-from Channel import Channel
+from environment.Agents import Agent
+from environment.policies import random_policy
+from environment.Channel import Channel
 class Simple_Generator(object):
     def __init__(self,n_agents,n_channels):
         self.n_agents = n_agents

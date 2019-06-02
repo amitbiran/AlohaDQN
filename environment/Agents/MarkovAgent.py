@@ -1,7 +1,4 @@
-from Agents.Agent import Agent
-from buffers.states_buffer import StatesBuffer
-import numpy as np
-from policies.dqn_policy import DqnPolicy
+from environment.Agents.Agent import Agent
 import random
 class MarkovAgent(Agent):
     def __init__(self,in_channel,out_channel,id,policy):

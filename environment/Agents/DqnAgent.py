@@ -1,8 +1,7 @@
 
-from Agents.Agent import Agent
-from buffers.states_buffer import StatesBuffer
+from environment.Agents import Agent
+from environment.buffers.states_buffer import StatesBuffer
 import numpy as np
-from policies.dqn_policy import DqnPolicy
 import random
 class DqnAgent(Agent):
     def __init__(self,in_channel,out_channel,id,policy,dqn,shape):

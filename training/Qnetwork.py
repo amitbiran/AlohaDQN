@@ -29,8 +29,6 @@ class Qnetwork():
         value = Dense(activation="linear", units=10)(x_value)
         advantage = Dense(activation="linear", units=10)(x_advantage)
 
-       # self.actions = Input(shape=(1,), dtype='int32')
-        #self.actions_onehot = Lambda(K.one_hot, arguments={'num_classes': 10}, output_shape=(None,10))(self.actions)#todo instead of 10 was env.actions
 
         q = QLayer()([value, advantage])  # output dim is now 10
         self.q_out = Dense(activation="softmax", units=OUTPUT_DIM)(q)

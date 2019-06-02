@@ -1,5 +1,5 @@
 import numpy as np
-from buffers.states_buffer import StatesBuffer
+from environment.buffers.states_buffer import StatesBuffer
 
 class StepsBuffer():
     def __init__(self,number_of_steps, buffer_size=50000):

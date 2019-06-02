@@ -1,6 +1,6 @@
-from generators.simple_generator import Simple_Generator
-from policies.dqn_policy import DqnPolicy
-from Agents.DqnAgent import DqnAgent
+from environment.generators.simple_generator import Simple_Generator
+from environment.policies import DqnPolicy
+from environment.Agents import DqnAgent
 
 class Dqn_Generator(Simple_Generator):
     dqn=None

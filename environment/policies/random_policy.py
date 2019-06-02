@@ -1,5 +1,5 @@
 import random
-from policies.policy import Policy
+from environment.policies.policy import Policy
 class random_policy(Policy):
 
     def take_action(self,n_channels):

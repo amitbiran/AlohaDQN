@@ -1,12 +1,22 @@
-from generators.simple_generator import Simple_Generator
-from generators.markov_generator import Markov_Generator
-from generators.dqn_generator import Dqn_Generator
-from topologics.random_topology import simple_topology
-from Qnetwork import Qnetwork
+from environment.generators.markov_generator import Markov_Generator
+from environment.topologics.random_topology import simple_topology
+
 class environment(object):
 
     #constructor
     def __init__(self, verbose=False,num_of_users=3,num_of_channels=3,dqn = None,shape=None,path =None):#dqn and shape are needed for our dqn generator, other generators may not need to use them
+        """
+        this is the constractor of the environment object. here we create the users and the channels and the topology using a generator.
+        we get the reward function from the topology. the generator can be changed to a different generator that will provide agents and channels and topology the fits
+        the user needs, in those cases the user should import the new generator to the environment and change the constractor function of the environment to use the new
+        generator.
+        :param verbose: a variable that if is true when given will make the environment object to print more logs about each step
+        :param num_of_users: an integer that represents the number of users the environment will host
+        :param num_of_channels: an integer that represents the amount of channels the environment will host, an extra channel will be created and it will represent the action of not transmiting
+        :param dqn: in some usecases the user might want the environment to hold a deep neural network especially in cases of training multiple agents at the same time, in this case he can give a refrence to the network in the dqn variable
+        :param shape: the shape of dqn
+        :param path: this is the path for the directory where the wieghts files will be for usecases in which the environment needs to update the wieghts of dqn
+        """
         self.verbose = verbose
         generator = Markov_Generator(n_agents=num_of_users,n_channels=num_of_channels)
         #generator.add_items(dqn,shape)
@@ -22,6 +32,17 @@ class environment(object):
         self.actions = self.number_of_channels+1
 
     def step(self, action):
+        """
+        this method incharge of synchronizing the environment accoridng to the channels that each user chose to transmit on at the current timestep
+        :param action: a number that represent the channel a user chose to transmit on
+        :return:
+            state - the state of the user, shows where the user chose to transmit and what reward he got for that action for example
+            [0,0,0,1,0,0,1.5] means that the user chose to transmit on channel 3 out of 5 (first channel represent not transmiting) and got a reward of 1.5 for that action
+            reward - the reward the user got for this current time step
+            done - a boolean that says if all users transimet legaly, if a user transmited in an ileageal way done will be true
+            info - information about the current state of the environment, will return a dictionary with the users who chose to transmit on each chanel and also an array
+            that shows which users got acknowledge for their action
+        """
         actions = [action]
         for agent in self.agents:
             actions.append(agent.take_action(len(self.channels)))
@@ -68,21 +89,32 @@ class environment(object):
         self.create_states(actions,ack_arr)
         return state,reward, done, info
 
-    def render(self):
-        pass
+
 
     def reset(self):
+        """
+        reset the environment. implementation may change for different usecases
+        :return: a state of zeros
+        """
         state = []
         for i in range(2*self.number_of_channels + 2):
             state.append(0)
         return state
 
     def after_episode(self):
+        """
+        an action the environment should do at the end of an episode,
+        currently its only loading wieghts for dqn but may change for different usecases
+        """
         self.dqn.load_weights(self.path)
 
 
     def create_states(self,actions,ack_arr):
-        #print("agent number: 0 has reward of {}".format(self.reward(ack_arr,actions[0],0)))
+        """
+        sorts out the state of each user in the environment and triggers the agents after_step method at the end of each timestep
+        :param actions: array that represents the action each user took
+        :param ack_arr: array that represent the acknowledge each user got for his action in current timestep
+        """
         for agent in self.agents:#dont want the first agent
             r = self.reward(ack_arr,actions[agent.id+1],agent.id+1)
             action = actions[agent.id+1]
