@@ -17,6 +17,7 @@ class QLayer(_Merge):
 
 
 class Qnetwork():
+    """this class is a Deep Q network with comfy syntax"""
     def __init__(self,number_of_steps,features,number_of_lstm_units,OUTPUT_DIM):
         self.state = Input(shape=(number_of_steps, features))
         LSTM_layer = LSTM(units=number_of_lstm_units, return_sequences=False)(self.state)#make it with an abstract batch_size
@@ -41,13 +42,16 @@ class Qnetwork():
         self.model.summary()
 
     def get_q(self, state):
+        """get the q value"""
         o=self.model.predict_on_batch(state)
         return o
 
-    def sample(self, size):#need to keep last number of steps rewards and states for each one i sample
+    def sample(self, size):
+        """sample the network"""
         return np.reshape(np.array(random.sample(self.buffer, size)), [size, 5])
 
     def save_model(self,path):
+        """save the model into files"""
         #save model hdf5
         self.model.save(os.path.join(path,"model.hdf5"))
         #save model as json
@@ -57,12 +61,15 @@ class Qnetwork():
         print("Saved model to disk")
 
     def save_weights(self,path):
+        """save the wights into files"""
         self.model.save_weights(os.path.join(path, "weights.h5"))
 
     def load_weights(self,path):
+        """load the weights from a file"""
         self.model.load_weights(os.path.join(path, "weights.h5"))
 
     def load_model(self,path):
+        """loads module from file"""
         json_file = open(os.path.join(path,"model.json"), 'r')
         loaded_model_json = json_file.read()
         json_file.close()

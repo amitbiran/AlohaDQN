@@ -3,4 +3,3 @@ tensorflow
 keras
 matplotlib
 h5py
-sphinx

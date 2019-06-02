@@ -10,6 +10,13 @@ from training.Qnetwork import Qnetwork
 import datetime
 import os
 
+
+"""
+this is the training algorithm of our project. it is not a part of the environment
+it is a good example though for use of the environment and any new user may learn a lot from
+looking at how this algorighm uses the environment
+"""
+
 countt=0
 NUM_OF_CHANNELS = 2
 number_of_steps = 3#how many time steps are we training it for

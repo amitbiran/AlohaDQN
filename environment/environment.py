@@ -1,6 +1,9 @@
 from environment.generators.markov_generator import Markov_Generator
 from environment.topologics.random_topology import simple_topology
-
+"""
+a general environment for training agents in a usecase of comunications networks
+the api is very similar to a gym game environment.
+"""
 class environment(object):
 
     #constructor

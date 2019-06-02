@@ -1,5 +1,8 @@
 from abc import ABC, abstractmethod
-
+"""
+a user who wishes to use the environment should inherit from tpology and implement a topology with reward function for his usecase. 
+the topology should be provided by the users generator
+"""
 class base_topology(ABC):
     agents = []
     channels = []
