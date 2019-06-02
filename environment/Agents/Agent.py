@@ -1,3 +1,6 @@
+"""
+user of the environment should implement an agent that fits his usecase and inherit from this base agent
+"""
 class Agent(object):
 
     def __init__(self,in_channel,out_channel,id,policy):
@@ -18,6 +21,6 @@ class Agent(object):
         return self.out_channel
 
     def after_step(self,state,reward):
-        i=0
+        pass
 
 

@@ -2,6 +2,10 @@ from environment.Agents import Agent
 from environment.policies import random_policy
 from environment.Channel import Channel
 class Simple_Generator(object):
+    """
+    each generator provides the users
+    channels and topologics for the environment
+    """
     def __init__(self,n_agents,n_channels):
         self.n_agents = n_agents
         self.n_channels = n_channels
